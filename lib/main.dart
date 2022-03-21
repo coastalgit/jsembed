@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jsembed/test1/jstest1_page.dart';
+import 'package:jsembed/test2/jstest2_page.dart';
 import 'package:jsembed/widgets/button_widget.dart';
 
 void main() {
@@ -43,6 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ButtonWidget(icon: Icons.web_asset, text: 'Dart.js', onClicked:  () => _navigateToTest1()),
+            const SizedBox(height: 20),
+            ButtonWidget(icon: Icons.web_asset, text: 'Package js', onClicked:  () => _navigateToTest2()),
           ],
         ),
       ),
@@ -52,6 +55,13 @@ class _MyHomePageState extends State<MyHomePage> {
   _navigateToTest1() async {
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => JSTest1Page(
+      ),
+    ));
+  }
+
+  _navigateToTest2() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => JSTest2Page(
       ),
     ));
   }
