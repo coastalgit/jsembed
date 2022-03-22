@@ -36,6 +36,20 @@ function updateLabel(){
     window.updateDartLabel('From JS - '+currentDate.toDateString());
 }
 
+function updateElement(){
+    var currentDate = new Date();
+    window.updateDartElement('From JS - testid', currentDate.toDateString());
+}
+
+/*
+//direct DOM approach does not work
+function updateLabelViaDOM(){
+    var currentDate = new Date();
+    document.getElementById("testid").innerHTML = currentDate.toDateString();
+}
+*/
+
+
 window.logger = (flutter_value) => {
    console.log({ js_context: this, flutter_value });
 }

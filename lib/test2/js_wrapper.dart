@@ -22,3 +22,17 @@ external set _updateDartLabel(void Function(String) f);
 void assignDartCallback(Function(String) dartFunc){
   _updateDartLabel = allowInterop(dartFunc);
 }
+
+// direct DOM test
+// @JS('updateLabelViaDOM')
+// external void updateLabelDOM();
+
+//js to dart test again
+@JS('updateElement')
+external void updateElementJS();
+@JS('updateDartElement')
+external set _updateDartElement(void Function(String, String) f);
+
+void assignDartCallbackElementUpdate(Function(String, String) dartFunc){
+  _updateDartElement = allowInterop(dartFunc);
+}

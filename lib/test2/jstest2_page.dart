@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:js/js_util.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import 'package:jsembed/test2/js_wrapper.dart';
 import 'package:jsembed/widgets/button_widget.dart';
@@ -14,6 +15,7 @@ class JSTest2Page extends StatefulWidget {
 class _JSTest2PageState extends State<JSTest2Page> {
 
   late String _labelTxt;
+  late String _labelTxt2;
   void _callbackFromJS(String jsSent){
     debugPrint('CALLBACK FROM JS: '+jsSent);
     setState(() {
@@ -21,11 +23,20 @@ class _JSTest2PageState extends State<JSTest2Page> {
     });
   }
 
+  void _callback2FromJS(String jsArg1, String jsArg2){
+    debugPrint('CALLBACK 2 FROM JS: a1:[{$jsArg1}] a2:[{$jsArg2}]');
+    setState(() {
+      _labelTxt2 = "a1:[{$jsArg1}] a2:[{$jsArg2}";
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _labelTxt = 'N/A';
+    _labelTxt2 = 'Empty';
     assignDartCallback(_callbackFromJS);
+    assignDartCallbackElementUpdate(_callback2FromJS);
   }
 
   @override
@@ -64,14 +75,36 @@ class _JSTest2PageState extends State<JSTest2Page> {
           ButtonWidget(icon: Icons.web_asset, text: 'JS callback to Dart', onClicked:  () {
             _makeJSCall3();
           }),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(_labelTxt),
             ),
           ),
+
+/*
+          const SizedBox(height: 20),
+          ButtonWidget(icon: Icons.web_asset, text: 'JS getElementById update', onClicked:  () {
+            _makeJSCall4();
+          }),
+          const SizedBox(height: 10),
+          _htmlTest(),
+*/
+          const SizedBox(height: 20),
+          ButtonWidget(icon: Icons.web_asset, text: 'JS callback to Dart 2 args', onClicked:  () {
+            _makeJSCall5();
+          }),
+          const SizedBox(height: 10),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(_labelTxt2),
+            ),
+          ),
+
         ],
+
       ),
     );
   }
@@ -88,6 +121,32 @@ class _JSTest2PageState extends State<JSTest2Page> {
 
   _makeJSCall3(){
     updateLabelJS();
+  }
+
+  _makeJSCall5(){
+    updateElementJS();
+  }
+
+  Widget _htmlTest() {
+    //return Html(data: "<h1>Hello</h1>");
+    //return Html(data: "<h1>Hello</h1>", style: {"#iconwrap": Style(color: Colors.blue)},);
+    //return Text('TESTING', style: TextStyle(color: Colors.white));
+    //return HtmlElementView(viewType: '<h1>Hello</h1>');
+    //Html wrapped = Html(data: "<span #iconwrap id=\"2\" style=\"color:#e0dcdc;\">");
+
+    // string manipulated approach
+    //String prefix = "<span #iconwrap id=\"2\" style=\"color:#e0dcdc;\">";
+    String content = "<h1 id=\"testid\">I am HTML!</h1>";
+    //return Html(data: wrapped);
+    //return Html(data: wrapped, style: {"#iconwrap": Style(color: Colors.blue)},);
+    Widget hw = Html(
+      data: content,
+    );
+    return hw;
+  }
+
+  _makeJSCall4(){
+    //updateLabelDOM();
   }
 
 }
