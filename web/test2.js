@@ -31,6 +31,11 @@ async function doTimer(timeoutInMs, timerVal){
     return promiseTimeout(timeoutInMs, promiseA);
 }
 
+function updateLabel(){
+    var currentDate = new Date();
+    window.updateDartLabel('From JS - '+currentDate.toDateString());
+}
+
 window.logger = (flutter_value) => {
    console.log({ js_context: this, flutter_value });
 }

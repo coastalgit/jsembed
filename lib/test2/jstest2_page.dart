@@ -13,6 +13,20 @@ class JSTest2Page extends StatefulWidget {
 
 class _JSTest2PageState extends State<JSTest2Page> {
 
+  late String _labelTxt;
+  void _callbackFromJS(String jsSent){
+    debugPrint('CALLBACK FROM JS: '+jsSent);
+    setState(() {
+      _labelTxt = jsSent;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _labelTxt = 'N/A';
+    assignDartCallback(_callbackFromJS);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +60,17 @@ class _JSTest2PageState extends State<JSTest2Page> {
           ButtonWidget(icon: Icons.web_asset, text: 'JS Promise (TIMEOUT)', onClicked:  () {
             _makeJSCall2('2000','4000').then((promiseResult) => _showSnackBar('Promise result:['+promiseResult+']', false)).catchError((promiseErr) => _showSnackBar('Promise error:['+promiseErr+']', true));
           }),
+          const SizedBox(height: 20),
+          ButtonWidget(icon: Icons.web_asset, text: 'JS callback to Dart', onClicked:  () {
+            _makeJSCall3();
+          }),
+          const SizedBox(height: 20),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(_labelTxt),
+            ),
+          ),
         ],
       ),
     );
@@ -60,4 +85,9 @@ class _JSTest2PageState extends State<JSTest2Page> {
     //var result = await promiseToFuture(doTimerJS('1000', '3000'));
     return result;
   }
+
+  _makeJSCall3(){
+    updateLabelJS();
+  }
+
 }
