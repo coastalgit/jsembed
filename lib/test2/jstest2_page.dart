@@ -1,6 +1,7 @@
 import 'package:js/js_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import 'package:jsembed/test2/js_wrapper.dart';
 import 'package:jsembed/widgets/button_widget.dart';
@@ -12,10 +13,18 @@ class JSTest2Page extends StatefulWidget {
   State<JSTest2Page> createState() => _JSTest2PageState();
 }
 
+class ElementById{
+  final String eId;
+  final String eValue;
+
+  ElementById(this.eId, this.eValue);
+}
+
 class _JSTest2PageState extends State<JSTest2Page> {
 
   late String _labelTxt;
   late String _labelTxt2;
+  late ElementById _elementById;
   void _callbackFromJS(String jsSent){
     debugPrint('CALLBACK FROM JS: '+jsSent);
     setState(() {
@@ -27,6 +36,7 @@ class _JSTest2PageState extends State<JSTest2Page> {
     debugPrint('CALLBACK 2 FROM JS: a1:[{$jsArg1}] a2:[{$jsArg2}]');
     setState(() {
       _labelTxt2 = "a1:[{$jsArg1}] a2:[{$jsArg2}";
+      _elementById = ElementById(jsArg1, jsArg2);
     });
   }
 
@@ -35,6 +45,7 @@ class _JSTest2PageState extends State<JSTest2Page> {
     super.initState();
     _labelTxt = 'N/A';
     _labelTxt2 = 'Empty';
+    _elementById = ElementById('', '');
     assignDartCallback(_callbackFromJS);
     assignDartCallbackElementUpdate(_callback2FromJS);
   }
@@ -58,6 +69,7 @@ class _JSTest2PageState extends State<JSTest2Page> {
   }
 
   Widget _buildBody() {
+    debugPrint('_buildBody');
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -102,7 +114,8 @@ class _JSTest2PageState extends State<JSTest2Page> {
               child: Text(_labelTxt2),
             ),
           ),
-
+          const SizedBox(height: 10),
+          _htmlWidgetTest(),
         ],
 
       ),
@@ -143,6 +156,32 @@ class _JSTest2PageState extends State<JSTest2Page> {
       data: content,
     );
     return hw;
+  }
+
+  Widget _htmlWidgetTest() {
+    debugPrint('_htmlWidgetTest');
+    String tmp = currentTimeInSeconds().toString(); // just to force an update by customStylesBuilder
+    String line1 = "<h1>I am HTML element 1</h1>";
+    String line2 = _elementById.eId.isEmpty?"<h1 id=\"testid\">I am HTML element 2</h1>":"<h1 id=\"testid\" class=\"{$tmp}\">I am HTML element 2 updated</h1>";
+    return HtmlWidget(
+      line1+line2,
+      customStylesBuilder: (element) {
+        //if (element.localName!.contains(_elementById.eId)) {
+        debugPrint('_htmlWidgetTest.customStylesBuilder id:['+_elementById.eId+']');
+        debugPrint('_htmlWidgetTest.customStylesBuilder attribs isEmpty:['+element.attributes.isEmpty.toString()+']');
+        //String keyVal =
+        if (element.attributes.containsValue(_elementById.eId)) {
+          debugPrint('_htmlWidgetTest.customStylesBuilder match on ID');
+          return {'color': 'red'};
+        }
+        return null;
+      },
+    );
+  }
+
+  static int currentTimeInSeconds() {
+    var ms = (DateTime.now()).millisecondsSinceEpoch;
+    return (ms / 1000).round();
   }
 
   _makeJSCall4(){

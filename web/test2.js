@@ -38,7 +38,7 @@ function updateLabel(){
 
 function updateElement(){
     var currentDate = new Date();
-    window.updateDartElement('From JS - testid', currentDate.toDateString());
+    window.updateDartElement('testid', 'DT: '+currentDate.toDateString());
 }
 
 /*
