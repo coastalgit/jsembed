@@ -10,6 +10,8 @@ function updateDOM(inVal) {
     inVal + '(class) : ' + currentDate.toTimeString();
 }
 
+let callingTimer;
+
 function updateDOMDynamic(inVal) {
   let callDiv = document.createElement('div');
   let callMsg = document.createElement('div');
@@ -41,16 +43,18 @@ function updateDOMDynamic(inVal) {
   callDiv.append(callMsg);
   callDiv.append(hangUpButton);
   document.getElementById('dadDiv').append(callDiv);
-
+  console.log('speedDiv added to dadDiv');
    //render call div & timer
     if (document.getElementsByClassName("speedDiv").length < 1) {
+      console.log('speedDiv detected');
       callTimer();
       document.getElementById("hangupButton").onclick = function close() {
         setTimeout(() => {
           console('Emulated hangup');
         }, 2000);
-        clearInterval(callingTimer);
+        //clearInterval(callingTimer);
         document.getElementsByClassName("speedDiv")[0].remove();
+        console.log('speedDiv removed');
       };
     }
 }
