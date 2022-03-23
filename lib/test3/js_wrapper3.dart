@@ -8,14 +8,5 @@ import 'dart:js_util';
 @JS('updateDOM')
 external void updateDOMJS(String inputVal);
 
-/*
-@JS('doDelayedUpdate')
-external dynamic doDelayedUpdateJS(String delay);
-
-@JS('doDartUpdate')
-external set _doDartUpdate(void Function(String, String) f);
-
-void assignDartCallbackDelayedUpdate(Function(String, String) dartFunc){
-  _doDartUpdate = allowInterop(dartFunc);
-}
-*/
+@JS('updateDOMDynamic')
+external void updateDOMDynamicJS(String inputVal);

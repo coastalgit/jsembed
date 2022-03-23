@@ -6,6 +6,7 @@ import 'package:universal_html/html.dart';
 
 import 'package:jsembed/widgets/button_widget.dart';
 
+//test access from js func (getElementById)
 Widget getElement1() {
   String htmlId = "testid";
 
@@ -26,6 +27,11 @@ Widget getElement1() {
   return HtmlElementView(viewType: htmlId);
 }
 
+void _actionOnClick(String msg){
+  debugPrint(msg);
+}
+
+// test onclick
 Widget getElement2() {
   String htmlId = "testid2";
 
@@ -38,7 +44,8 @@ Widget getElement2() {
       ..style.textFillColor = '#FFFFFF'
       ..style.backgroundColor = '#3630a3'
       ..onClick.listen((event) {
-        debugPrint('CLICKED HTML BUTTON');
+        //debugPrint('CLICKED HTML BUTTON');
+        return  _actionOnClick('Click');
       })
     ;
 
@@ -47,6 +54,31 @@ Widget getElement2() {
 
   return HtmlElementView(viewType: htmlId);
 }
+
+//test access from js func (getElementsByClassName)
+Widget getElement3() {
+  String htmlId = "testid3";
+
+  // ignore: undefined_prefixed_name
+  ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
+
+    final elem = ButtonElement()
+      ..id = htmlId
+      ..appendText("I am html button")
+      ..style.textFillColor = '#FFFFFF'
+      ..style.backgroundColor = '#3630a3'
+      ..onClick.listen((event) {
+        //debugPrint('CLICKED HTML BUTTON');
+        return  _actionOnClick('Click');
+      })
+    ;
+
+    return elem;
+  });
+
+  return HtmlElementView(viewType: htmlId);
+}
+
 
 class JSTest3Page extends StatefulWidget {
   const JSTest3Page({Key? key}) : super(key: key);
@@ -161,7 +193,10 @@ class _JSTest3PageState extends State<JSTest3Page> {
                   child: getElement2(),
                 )),
           ),
-
+          const SizedBox(height: 10),
+          ButtonWidget(icon: Icons.web_asset, text: 'Update DOM dynamically via JS', onClicked:  () {
+            _makeJSCall1();
+          }),
         ],
       ),
     );
@@ -172,7 +207,12 @@ class _JSTest3PageState extends State<JSTest3Page> {
     updateDOMJS(_ctr.toString());
   }
 
-// Future _makeJSCall1(String timerVal) async {
+  _makeJSCall2(){
+    _ctr = _ctr+1;
+    updateDOMDynamicJS(_ctr.toString());
+  }
+
+  // Future _makeJSCall1(String timerVal) async {
   //   var result = await promiseToFuture(doDelayedUpdateJS(timerVal));
   //   return result;
   // }
