@@ -12,13 +12,12 @@ Widget getElement1() {
 
   // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
     final elem = DivElement()
       ..id = htmlId
       ..style.width = "100%"
       ..style.height = "100%"
       ..style.border = 'none'
-    ..appendText("I am html text")
+      ..appendText("I am html text")
       ..style.textFillColor = '#33cc33';
 
     return elem;
@@ -27,7 +26,7 @@ Widget getElement1() {
   return HtmlElementView(viewType: htmlId);
 }
 
-void _actionOnClick(String msg){
+void _actionOnClick(String msg) {
   debugPrint(msg);
 }
 
@@ -37,7 +36,6 @@ Widget getElement2() {
 
   // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
     final elem = ButtonElement()
       ..id = htmlId
       ..appendText("I am html button")
@@ -45,9 +43,8 @@ Widget getElement2() {
       ..style.backgroundColor = '#3630a3'
       ..onClick.listen((event) {
         //debugPrint('CLICKED HTML BUTTON');
-        return  _actionOnClick('Click');
-      })
-    ;
+        return _actionOnClick('Click');
+      });
 
     return elem;
   });
@@ -57,20 +54,13 @@ Widget getElement2() {
 
 //test access from js func (getElementsByClassName)
 Widget getElement3() {
-  String htmlId = "testid3";
+  //<div id="dadDiv" style="display: none;"></div>
+  String htmlId = "dadDiv";
 
   // ignore: undefined_prefixed_name
   ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
-    final elem = ButtonElement()
-      ..id = htmlId
-      ..appendText("I am html button")
-      ..style.textFillColor = '#FFFFFF'
-      ..style.backgroundColor = '#3630a3'
-      ..onClick.listen((event) {
-        //debugPrint('CLICKED HTML BUTTON');
-        return  _actionOnClick('Click');
-      })
+    final elem = DivElement()..id = htmlId
+    //..style.display = 'none'
     ;
 
     return elem;
@@ -78,7 +68,6 @@ Widget getElement3() {
 
   return HtmlElementView(viewType: htmlId);
 }
-
 
 class JSTest3Page extends StatefulWidget {
   const JSTest3Page({Key? key}) : super(key: key);
@@ -168,47 +157,70 @@ class _JSTest3PageState extends State<JSTest3Page> {
 
   Widget _buildBody() {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
         children: [
-          ButtonWidget(icon: Icons.web_asset, text: 'Update DOM via JS', onClicked:  () {
-            _makeJSCall1();
-          }),
-          const SizedBox(height: 10),
+/*
           Container(
-            color: Colors.blueGrey.shade100,
-            child: SizedBox(
-                height: 100,
-                child: getElement1()),
+            color: Colors.pink.shade100,
+            child: getElement3(),
           ),
-          const SizedBox(height: 10),
-          Container(
-            color: Colors.blueGrey.shade100,
-            child: SizedBox(
-                height: 100,
-                width: 170,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: getElement2(),
-                )),
+*/
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ButtonWidget(
+                  icon: Icons.web_asset,
+                  text: 'Update DOM via JS',
+                  onClicked: () {
+                    _makeJSCall1();
+                  }),
+              const SizedBox(height: 10),
+              Container(
+                color: Colors.blueGrey.shade100,
+                child: SizedBox(height: 100, child: getElement1()),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                color: Colors.blueGrey.shade100,
+                child: SizedBox(
+                    height: 100,
+                    width: 170,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: getElement2(),
+                    )),
+              ),
+              const SizedBox(height: 10),
+              ButtonWidget(
+                  icon: Icons.web_asset,
+                  text: 'Update DOM dynamically via JS',
+                  onClicked: () {
+                    _makeJSCall2();
+                  }),
+
+/*
+              const SizedBox(height: 10),
+              Container(
+                color: Colors.blueGrey.shade100,
+                child: SizedBox(height: 100, child: getElement3()),
+              ),
+*/
+
+            ],
           ),
-          const SizedBox(height: 10),
-          ButtonWidget(icon: Icons.web_asset, text: 'Update DOM dynamically via JS', onClicked:  () {
-            _makeJSCall1();
-          }),
         ],
       ),
     );
   }
 
-  _makeJSCall1(){
-    _ctr = _ctr+1;
+  _makeJSCall1() {
+    _ctr = _ctr + 1;
     updateDOMJS(_ctr.toString());
   }
 
-  _makeJSCall2(){
-    _ctr = _ctr+1;
+  _makeJSCall2() {
+    _ctr = _ctr + 1;
     updateDOMDynamicJS(_ctr.toString());
   }
 

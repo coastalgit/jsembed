@@ -13,12 +13,32 @@ function updateDOM(inVal) {
 let callingTimer;
 
 function updateDOMDynamic(inVal) {
+   //render call div & timer
+    if (document.getElementsByClassName("speedDiv").length < 1) {
+      console.log('speedDiv not found');
+      callDisplay();
+      document.getElementById("hangupButton").onclick = function close() {
+        setTimeout(() => {
+          console('Emulated hangup');
+        }, 2000);
+        //clearInterval(callingTimer);
+        document.getElementsByClassName("speedDiv")[0].remove();
+        console.log('speedDiv removed');
+      };
+    }
+    else{
+        console.log('speedDiv already in DOM');
+    }
+}
+
+function callDisplay() {
   let callDiv = document.createElement('div');
   let callMsg = document.createElement('div');
   let hangUpButton = document.createElement('div');
 
   callMsg.id = 'callMsg';
   callMsg.innerHTML = 'calling';
+  callMsg.style.marginBottom = "18px"
 
   hangUpButton.setAttribute('id', 'hangupButton');
   hangUpButton.innerHTML = `<svg
@@ -44,17 +64,4 @@ function updateDOMDynamic(inVal) {
   callDiv.append(hangUpButton);
   document.getElementById('dadDiv').append(callDiv);
   console.log('speedDiv added to dadDiv');
-   //render call div & timer
-    if (document.getElementsByClassName("speedDiv").length < 1) {
-      console.log('speedDiv detected');
-      callTimer();
-      document.getElementById("hangupButton").onclick = function close() {
-        setTimeout(() => {
-          console('Emulated hangup');
-        }, 2000);
-        //clearInterval(callingTimer);
-        document.getElementsByClassName("speedDiv")[0].remove();
-        console.log('speedDiv removed');
-      };
-    }
 }

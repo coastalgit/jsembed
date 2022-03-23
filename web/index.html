@@ -29,13 +29,22 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
+  <!-- External CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://kit.fontawesome.com/66f587eadf.js" crossorigin="anonymous"></script>
+
   <title>jsembed</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="test1.js" defer></script>
-  <script src="test2.js" defer></script>
-  <script src="test3.js" defer></script>
+  <script src="js/test1.js" defer></script>
+  <script src="js/test2.js" defer></script>
+  <script src="js/test3.js" defer></script>
+
+  <script type="text/javascript">
+      window.flutterWebRenderer = "html";
+      //window.flutterWebRenderer = "canvaskit";
+  </script>
 
 <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
@@ -105,7 +114,10 @@
     }
   </script>
 
-  <div id="dadDiv" style="display: none;"></div>
+  <!--<div id="dadDiv" style="display: none;"></div>-->
+  <!--OVERLAY-->
+  <div id="dadDiv" style="display: block;"></div>
+
   <div id="testindex">TESTINDEX</div>
   <div class="testindexclass">TESTINDEXCLASS</div>
 
