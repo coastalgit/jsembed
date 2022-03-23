@@ -1,5 +1,5 @@
 @JS()
-library javascript_bundler;
+library javascript_bundler2;
 
 import 'package:js/js.dart';
 // ignore: avoid_web_libraries_in_flutter

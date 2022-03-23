@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
-import 'package:jsembed/test2/js_wrapper.dart';
+import 'package:jsembed/test2/js_wrapper2.dart';
 import 'package:jsembed/widgets/button_widget.dart';
 
 class JSTest2Page extends StatefulWidget {
